@@ -1,0 +1,17 @@
+version: '2.1'
+services:
+  airflow:
+    build: .
+    restart: always
+    container_name: airflow
+    volumes:
+      - ./mnt/dags:/opt/airflow/dags
+      - ./mnt/csv_files:/airflow/files
+      - ./mnt/result_files:/airflow/result
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "airflow", "8080" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
